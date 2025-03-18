@@ -1,85 +1,94 @@
 # Expense Tracker App
 
-This is an Expense Tracker application built using **Streamlit** and **SQL Server**. The app allows users to add family members and track their expenses. It supports features such as filtering by family member, month, and sorting by amount, along with the ability to update and delete expenses.
+This project is an Expense Tracker application built with Streamlit, SQL Server, and Python.
+
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+- [SQL Table Setup](#sql-table-setup)
+- [Usage](#usage)
+- [Contributing](#contributing)
+
+## Overview
+The Expense Tracker allows users to track their expenses and categorize them by family member, amount, and date. It supports adding, updating, and deleting expenses, as well as filtering by family member and month.
+
+
 
 ## Features
+- Add Family Member
+- Add Expense
+- View and Filter Expenses by Family Member/Month
+- Update and Delete Expenses
 
-- **Add Family Members:** Users can add family members to the database.
-- **Add Expenses:** Users can add expenses linked to family members, specifying details such as date, category, amount, and description.
-- **View Expenses:** Users can view all expenses, with options to filter by family member or month.
-- **Update Expenses:** Users can update the amount, category, description, or date for existing expenses.
-- **Delete Expenses:** Users can delete any expense from the system.
-- **Sorting:** Expenses can be sorted in ascending or descending order by amount.
+## Installation
 
-## Technologies Used
-
-- **Streamlit:** For the frontend UI.
-- **SQL Server:** For database management and storing expenses and family member data.
-- **pyodbc:** For connecting to the SQL Server database from Python.
-  
-## Prerequisites
+### Prerequisites
 
 Before running the application, make sure you have the following installed:
+- Python 3.x
+- SQL Server
 
-1. Python (3.x)
-2. Streamlit (`pip install streamlit`)
-3. pyodbc (`pip install pyodbc`)
-4. SQL Server
+### Steps
 
-You will also need an **SQL Server** instance running with the appropriate tables set up. Below are the SQL queries to create the necessary tables.
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/your-repository.git
+    ```
 
-### SQL Table Setup
+2. Navigate to the project folder:
+    ```bash
+    cd your-repository
+    ```
 
-#### FamilyMembers Table
+3. Install the required packages:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. Set up your SQL Server database (see **SQL Table Setup**).
+
+## SQL Table Setup
+
+Run the following SQL queries to create the necessary tables in your SQL Server database:
+
 ```sql
 CREATE TABLE FamilyMembers (
     id INT PRIMARY KEY IDENTITY(1,1),
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(255) NOT NULL
 );
-
-Expenses Table
 
 CREATE TABLE Expenses (
     id INT PRIMARY KEY IDENTITY(1,1),
     family_member_id INT,
     date DATE,
-    amount DECIMAL(10, 2),
-    category VARCHAR(50),
-    description VARCHAR(255),
-    FOREIGN KEY (family_member_id) REFERENCES FamilyMembers(id)
-);
+    amount DECIMAL(18,2)
+```
+## Usage
 
-Setup
-Clone the repository:
+After setting up your SQL tables, follow these steps to run the app:
 
+## Running the Application
 
-git clone https://github.com/your-username/ExpenseTrackerApp.git
-cd ExpenseTrackerApp
-Install required dependencies:
-
-Install Streamlit and pyodbc using pip:
-
-
-pip install streamlit pyodbc
-Configure the database connection:
-
-Update the database connection string in the db_connection.py file to reflect your local SQL Server setup.
-
-
-connection_string = "DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=ExpenseTracker;Trusted_Connection=yes;"
-Run the application:
-
-After setting up your database and installing dependencies, run the app using Streamlit:
-
+To start the application, run the following command in the project directory:
 
 streamlit run app.py
-Access the App:
+This will open the app in your browser, where you can add family members, expenses, and view them.
 
-The app will open in your default browser. You can now add family members, add expenses, and view/manage them through the app.
+## SQL Table Setup
+Make sure that you have created the FamilyMembers and Expenses tables as shown in the SQL Table Setup section. These tables are crucial for the proper functioning of the app.
 
-Usage
-Add Family Member: Use the "Add Family Member" form to enter the name of a family member.
-Add Expense: After adding family members, you can add expenses by selecting the family member, specifying the amount, category, date, and description.
-View Expenses: You can view all expenses, filter by family member and/or month, and sort them.
-Update Expense: Click the ID of an expense to edit its details.
-Delete Expense: Click the ID of an expense to delete it from the system.
+## Adding Family Members
+Once the app is running, use the interface to add family members. The add_family_member() function in family_member.py handles this.
+
+## Adding Expenses
+You can add expenses associated with family members by selecting them from a dropdown and entering the amount, category, date, and description.
+
+## Viewing Expenses
+The app allows you to view all expenses, filtered by family member and month. You can also update or delete expenses.
+
+## Updating and Deleting Expenses
+To update or delete an expense:
+
+## Enter the Expense ID
+Update the necessary fields or delete the expense
