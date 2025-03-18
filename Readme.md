@@ -1,56 +1,35 @@
 # Expense Tracker App
 
-This project is an Expense Tracker application built with Streamlit, SQL Server, and Python.
+## Description
+The Expense Tracker is a simple application built using Streamlit and SQL Server. It allows users to track their expenses, categorize them by family members, amount, and date. The app provides functionalities to add family members, record expenses, and view them with filters for family members and months.
 
-## Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Installation](#installation)
-- [SQL Table Setup](#sql-table-setup)
-- [Usage](#usage)
-- [Contributing](#contributing)
+## Purpose
+The purpose of this project is to provide a user-friendly interface for families to track and manage their expenses. It aims to simplify expense recording by associating each expense with a family member and providing easy-to-use features for managing data.
 
-## Overview
-The Expense Tracker allows users to track their expenses and categorize them by family member, amount, and date. It supports adding, updating, and deleting expenses, as well as filtering by family member and month.
+## Value
+This app helps families gain better control over their finances by tracking all the expenditures. Users can filter expenses based on family members and months, enabling them to understand where their money is being spent and make informed financial decisions.
 
+## Technologies Used
+- **Streamlit**: A Python library used for creating web applications for data science and machine learning.
+- **Python**: The main programming language used for backend logic.
+- **SQL Server**: Used for storing family member and expense data.
+- **pyodbc**: A Python package for connecting to SQL Server databases.
+- **pandas**: For displaying and manipulating data in tables.
 
-
-## Features
-- Add Family Member
-- Add Expense
-- View and Filter Expenses by Family Member/Month
-- Update and Delete Expenses
-
-## Installation
+## Setup Instructions
 
 ### Prerequisites
 
-Before running the application, make sure you have the following installed:
-- Python 3.x
-- SQL Server
-
-### Steps
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/your-username/your-repository.git
-    ```
-
-2. Navigate to the project folder:
-    ```bash
-    cd your-repository
-    ```
-
-3. Install the required packages:
+1. Python 3.x installed on your machine.
+2. SQL Server running locally or remotely.
+3. Required Python libraries installed. You can install them by running:
     ```bash
     pip install -r requirements.txt
     ```
 
-4. Set up your SQL Server database (see **SQL Table Setup**).
+### SQL Table Setup
 
-## SQL Table Setup
-
-Run the following SQL queries to create the necessary tables in your SQL Server database:
+To set up the database, execute the following SQL queries to create the necessary tables:
 
 ```sql
 CREATE TABLE FamilyMembers (
@@ -62,33 +41,32 @@ CREATE TABLE Expenses (
     id INT PRIMARY KEY IDENTITY(1,1),
     family_member_id INT,
     date DATE,
-    amount DECIMAL(18,2)
+    amount DECIMAL(18,2),
+    category VARCHAR(50),
+    description TEXT,
+    FOREIGN KEY (family_member_id) REFERENCES FamilyMembers(id)
+);
 ```
 ## Usage
-
-After setting up your SQL tables, follow these steps to run the app:
-
-## Running the Application
-
-To start the application, run the following command in the project directory:
+Running the Application
+After setting up the SQL tables, you can run the app by executing the following command in the project directory:
 
 streamlit run app.py
-This will open the app in your browser, where you can add family members, expenses, and view them.
+The app will open in your default web browser, and you will be able to:
 
-## SQL Table Setup
-Make sure that you have created the FamilyMembers and Expenses tables as shown in the SQL Table Setup section. These tables are crucial for the proper functioning of the app.
+- Add family members
+- Add expenses for each family member
+- View and filter expenses based on family member or month
+- Update and delete expenses
 
-## Adding Family Members
-Once the app is running, use the interface to add family members. The add_family_member() function in family_member.py handles this.
+## Adding Family Members and Expenses
+- Use the Add Family Member form to enter the names of family members.
+- Use the Add Expense form to enter expenses, choosing a family member, date, amount, category, and description.
+- View and filter expenses based on family member and month. You can also update or delete any existing expense by providing its ID.
 
-## Adding Expenses
-You can add expenses associated with family members by selecting them from a dropdown and entering the amount, category, date, and description.
-
-## Viewing Expenses
-The app allows you to view all expenses, filtered by family member and month. You can also update or delete expenses.
-
-## Updating and Deleting Expenses
-To update or delete an expense:
-
-## Enter the Expense ID
-Update the necessary fields or delete the expense
+## Contributing
+1. Fork the repository to your own GitHub account.
+2. Create a new branch for your changes (git checkout -b feature-branch).
+3. Make your changes and commit them (git commit -m 'Add feature').
+4. Push your branch (git push origin feature-branch).
+5. Open a pull request on the original repository.
