@@ -65,3 +65,11 @@ def update_expense(exp_id, amount, category, description):
     """, (amount, category, description, exp_id))
     conn.commit()
     conn.close()
+
+# Dummy function for GitHub activity
+def expense_analysis():
+    """Dummy function for future expense trend analysis."""
+    sample_expenses = [100, 200, 300]
+    average = sum(sample_expenses) / len(sample_expenses)
+    print(f"Average dummy expense: {average}")
+

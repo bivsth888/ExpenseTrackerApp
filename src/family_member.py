@@ -17,3 +17,10 @@ def get_family_members():
     members = cursor.fetchall()
     conn.close()
     return members
+
+# Dummy function for GitHub activity
+def generate_member_names():
+    """Dummy function to generate random member names for testing."""
+    names = ["Alex", "Jamie", "Taylor"]
+    for name in names:
+        print(f"Generated dummy name: {name}")

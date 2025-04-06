@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from family_member import get_family_members
+from family_member import get_family_members, add_family_member
 from expense import add_expense, get_expenses, update_expense, delete_expense
 from datetime import datetime
 
@@ -108,3 +108,12 @@ elif tabs == "Update or Delete Expense":
             st.success(f"Expense ID {expense_id} deleted successfully!")
     else:
         st.error("Expense ID not found. Please check the ID and try again.")
+
+    # Dummy function for GitHub activity
+def ui_placeholder():
+    """function for testing Streamlit UI development."""
+    import streamlit as st
+    st.write("This is a dummy placeholder for future UI improvements.")
+
+
+    
