@@ -1,5 +1,6 @@
 from db_connection import get_db_connection
 from family_member import get_family_members  # Import get_family_members
+from datetime import datetime
 
 # Function to add an expense
 def add_expense(family_member_id, expense_date, amount, category, description):
@@ -13,30 +14,25 @@ def add_expense(family_member_id, expense_date, amount, category, description):
     conn.close()
 
 # Function to get expenses (with optional filters)
-def get_expenses(filter_member=None, filter_month=None, exp_id=None):
+def get_expenses(filter_member="All", filter_month="All"):
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    query = "SELECT * FROM Expenses"
+    query = "SELECT id, family_member_id, date, amount, category, description FROM Expenses"
     conditions = []
     params = []
 
-    if filter_member and filter_member != "All":
-        family_members = get_family_members()
+    if filter_member != "All":
         conditions.append("family_member_id = ?")
-        params.append([member[0] for member in family_members if member[1] == filter_member][0])
+        # You’ll need to convert name -> ID here; assuming you already handled that earlier
+        from family_member import get_family_members
+        member_id = [member[0] for member in get_family_members() if member[1] == filter_member][0]
+        params.append(member_id)
 
-    if filter_month and filter_month != "All":
-        month_map = {
-            "January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6,
-            "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12
-        }
+    if filter_month != "All":
+        month_num = datetime.strptime(filter_month, "%B").month
         conditions.append("MONTH(date) = ?")
-        params.append(month_map[filter_month])
-
-    if exp_id:
-        conditions.append("id = ?")
-        params.append(exp_id)
+        params.append(month_num)
 
     if conditions:
         query += " WHERE " + " AND ".join(conditions)
@@ -68,7 +64,7 @@ def update_expense(exp_id, amount, category, description):
 
 # Dummy function for GitHub activity
 def expense_analysis():
-    """Dummy function for future expense trend analysis."""
+    """function for future expense trend analysis."""
     sample_expenses = [100, 200, 300]
     average = sum(sample_expenses) / len(sample_expenses)
     print(f"Average dummy expense: {average}")
