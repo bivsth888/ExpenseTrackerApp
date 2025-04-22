@@ -15,6 +15,7 @@ This app helps families gain better control over their finances by tracking all 
 - **SQL Server**: Used for storing family member and expense data.
 - **pyodbc**: A Python package for connecting to SQL Server databases.
 - **pandas**: For displaying and manipulating data in tables.
+- **matplotlib**: For visualizing expenses in pie charts.
 
 ## Setup Instructions
 
@@ -58,11 +59,21 @@ The app will open in your default web browser, and you will be able to:
 - Add expenses for each family member
 - View and filter expenses based on family member or month
 - Update and delete expenses
+- Search expenses by description
+- Visualize expenses using pie charts by category and by family member
 
 ## Adding Family Members and Expenses
 - Use the Add Family Member form to enter the names of family members.
 - Use the Add Expense form to enter expenses, choosing a family member, date, amount, category, and description.
 - View and filter expenses based on family member and month. You can also update or delete any existing expense by providing its ID.
+- Use the search bar to find expenses by keywords in their description.
+
+## Visualize Expenses 
+
+- The Visualize Expenses tab displays pie charts that break down:
+
+1. Expenses by Category: Understand spending distribution like Food, Transport, etc.
+2. Expenses by Family Member: See which family members are responsible for more spending.
 
 ## Contributing
 1. Fork the repository to your own GitHub account.
