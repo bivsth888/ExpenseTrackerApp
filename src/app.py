@@ -6,15 +6,19 @@ from family_member import get_family_members, add_family_member
 from expense import add_expense, get_expenses, update_expense, delete_expense
 from decimal import Decimal
 
-# Page title
+# ===============================
+# PAGE TITLE AND NAVIGATION MENU
+# ===============================
 st.title("Expense Tracker")
-
-# Navigation tabs
 tabs = st.sidebar.radio("Navigate", ["Add Data", "View Expenses", "Visualize Expenses"])
 
-# ========== TAB 1: Add Data ==========
+# ========================================
+# TAB 1: ADD FAMILY MEMBER AND ADD EXPENSE
+# ========================================
 if tabs == "Add Data":
     st.header("Add Family Member")
+
+    # ---- Form to Add Family Member ----
     with st.form(key='add_family_member_form'):
         family_member_name = st.text_input("Family Member Name")
         submit_button = st.form_submit_button(label='Add Family Member')
@@ -26,18 +30,23 @@ if tabs == "Add Data":
                 st.error("Please enter a valid name.")
 
     st.header("Add Expense")
+
+    # ---- Form to Add Expense ----
     with st.form(key='add_expense_form'):
         family_members = get_family_members()
         family_member_options = [member[1] for member in family_members]
         family_member_name = st.selectbox("Select Family Member", family_member_options)
 
+        # Get family member ID based on name selected
         family_member_id = [member[0] for member in family_members if member[1] == family_member_name][0]
+
         expense_date = st.date_input("Expense Date", value=datetime.today())
         amount = st.number_input("Amount", min_value=0.01, format="%.2f")
         category = st.selectbox("Category", ["Food", "Transport", "Bills", "Other"])
         description = st.text_area("Description", "")
         submit_button = st.form_submit_button(label='Add Expense')
 
+        # Save expense if valid
         if submit_button:
             if amount > 0:
                 add_expense(family_member_id, expense_date, float(amount), category, description)
@@ -45,9 +54,13 @@ if tabs == "Add Data":
             else:
                 st.error("Please enter a valid amount.")
 
-# ========== TAB 2: View Expenses ==========
+# ===================================
+# TAB 2: VIEW, SEARCH, EDIT EXPENSES
+# ===================================
 elif tabs == "View Expenses":
     st.header("View All Expenses")
+
+    # ---- Filter Options ----
     st.subheader("Filter by Family Member or Month")
     family_members = get_family_members()
     family_member_options = [member[1] for member in family_members]
@@ -56,37 +69,49 @@ elif tabs == "View Expenses":
                                                     "July", "August", "September", "October", "November", "December"])
 
     expenses = get_expenses(filter_member=selected_member, filter_month=month_filter)
-    st.subheader("Expenses")
 
+    # ---- Description Search Box ----
+    st.subheader("Search by Description")
+    search_text = st.text_input("Enter keyword to search in descriptions")
+
+    # ---- Prepare Expense Data ----
     expense_data = []
     for expense in expenses:
         family_member_name = [member[1] for member in family_members if member[0] == expense[1]][0]
         expense_data.append([expense[0], family_member_name, expense[2], float(expense[3]), expense[4], expense[5]])
 
-    if expense_data:
-        st.write("Debug - expenses content:", expenses)
-        if expenses:
-            expense_df = pd.DataFrame(expense_data, columns=["ID", "Family Member", "Date", "Amount", "Category", "Description"])
-            st.dataframe(expense_df)
-        else:
-            st.warning("No expense data found for the selected filter.")
+    # ---- Filter based on Description ----
+    if search_text:
+        expense_data = [exp for exp in expense_data if search_text.lower() in exp[5].lower()]
 
+    if expense_data:
+        # ---- Show Filtered Table ----
+        expense_df = pd.DataFrame(expense_data, columns=["ID", "Family Member", "Date", "Amount", "Category", "Description"])
+        st.dataframe(expense_df)
+
+        # ---- Select Expense ID for Update/Delete ----
         st.subheader("Update or Delete Expense by ID")
         expense_ids = expense_df["ID"].tolist()
         selected_id = st.selectbox("Select Expense ID", expense_ids)
-
         expense = expense_df[expense_df["ID"] == selected_id].values[0]
 
+        # ---- Update/Delete Form ----
         with st.form("update_delete_form"):
             updated_amount = st.number_input("Updated Amount", value=float(expense[3]), min_value=0.01, format="%.2f")
-            updated_category = st.selectbox("Updated Category", ["Food", "Transport", "Bills", "Other"], index=["Food", "Transport", "Bills", "Other"].index(expense[4]))
+
+            # Ensure current category is in the list
+            default_categories = ["Food", "Transport", "Bills", "Other"]
+            if expense[4] not in default_categories:
+                default_categories.append(expense[4])
+            updated_category = st.selectbox("Updated Category", default_categories, index=default_categories.index(expense[4]))
+
             updated_description = st.text_area("Updated Description", value=expense[5])
+
             col1, col2 = st.columns(2)
             with col1:
                 if st.form_submit_button("Update"):
                     update_expense(selected_id, float(updated_amount), updated_category, updated_description)
                     st.success("Expense updated successfully.")
-                    
             with col2:
                 if st.form_submit_button("Delete"):
                     delete_expense(selected_id)
@@ -94,35 +119,30 @@ elif tabs == "View Expenses":
     else:
         st.info("No expenses found for the selected filter.")
 
-# ========== TAB 3: Visualize Expenses ==========
+# ========================================
+# TAB 3: VISUALIZATION - PIE CHART REPORTS
+# ========================================
 elif tabs == "Visualize Expenses":
     st.header("Visualize Expenses")
 
-    # Toggle: View Mode
+    # ---- View Mode: All or By Month ----
     view_mode = st.selectbox("Select View Mode", ["All Time", "By Month"])
 
-    # Month filter (only shown if view mode is "By Month")
     if view_mode == "By Month":
         filter_month = st.selectbox("Select Month", [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ])
-        from datetime import datetime  # ensure this is imported at the top
         month_num = datetime.strptime(filter_month, "%B").month
         expenses = get_expenses(filter_month=filter_month)
     else:
-        expenses = get_expenses()  # All time
+        expenses = get_expenses()
 
     if not expenses:
         st.warning("No data found for the selected view.")
         st.stop()
 
-    # Clean and transform data for DataFrame
-    from decimal import Decimal
-    from datetime import date
-    import pandas as pd
-    import matplotlib.pyplot as plt
-
+    # ---- Clean Data for Plotting ----
     cleaned_expenses = []
     for exp in expenses:
         cleaned_expenses.append([
@@ -136,12 +156,12 @@ elif tabs == "Visualize Expenses":
 
     df = pd.DataFrame(cleaned_expenses, columns=["ID", "Family Member ID", "Date", "Amount", "Category", "Description"])
 
-    # Merge family member names
+    # ---- Add Family Member Names ----
     family_members = get_family_members()
     member_dict = {member[0]: member[1] for member in family_members}
     df["Family Member"] = df["Family Member ID"].map(member_dict)
 
-    # Pie Chart: Expenses by Category
+    # ---- Pie Chart by Category ----
     st.subheader("Expenses by Category")
     category_summary = df.groupby("Category")["Amount"].sum()
     fig1, ax1 = plt.subplots()
@@ -149,7 +169,7 @@ elif tabs == "Visualize Expenses":
     ax1.axis("equal")
     st.pyplot(fig1)
 
-    # Pie Chart: Expenses by Family Member
+    # ---- Pie Chart by Family Member ----
     st.subheader("Expenses by Family Member")
     member_summary = df.groupby("Family Member")["Amount"].sum()
     fig2, ax2 = plt.subplots()
