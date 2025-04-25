@@ -31,7 +31,7 @@ This app helps families gain better control over their finances by tracking all 
 
 ### SQL Table Setup
 
-To set up the database, execute the following SQL queries to create the necessary tables:
+To set up the database, execute the following SQL queries in the SSMS to create the necessary tables:
 
 ```sql
 CREATE TABLE FamilyMembers (
@@ -53,9 +53,10 @@ CREATE TABLE Expenses (
 Running the Application
 After setting up the SQL tables, you can run the app by executing the following command in the project directory in the src folder:
 
-- cd ExpenseTrackerApp
-- cd src
-- streamlit run app.py
+1. cd ExpenseTrackerApp
+2. cd src
+3. streamlit run app.py
+
 The app will open in your default web browser, and you will be able to:
 
 - Add family members
