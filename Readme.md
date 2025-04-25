@@ -17,6 +17,9 @@ This app helps families gain better control over their finances by tracking all 
 - **pandas**: For displaying and manipulating data in tables.
 - **matplotlib**: For visualizing expenses in pie charts.
 
+## Youtube Video Link
+https://www.youtube.com/watch?v=WO5j90jTzy0&ab_channel=BivekShrestha
+
 ## Setup Instructions
 
 ### Prerequisites
