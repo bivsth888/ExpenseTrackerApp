@@ -21,9 +21,10 @@ This app helps families gain better control over their finances by tracking all 
 
 ### Prerequisites
 
-1. Python 3.x installed on your machine.
-2. SQL Server running locally or remotely.
-3. Required Python libraries installed. You can install them by running:
+1. Clone the master repository using the command "git clone --branch master https://github.com/bivsth888/ExpenseTrackerApp.git"
+2. Python 3.x installed on your machine.
+3. SQL Server running locally or remotely.
+4. Required Python libraries installed. You can install them by running:
     ```bash
     pip install -r requirements.txt
     ```
@@ -50,9 +51,11 @@ CREATE TABLE Expenses (
 ```
 ## Usage
 Running the Application
-After setting up the SQL tables, you can run the app by executing the following command in the project directory:
+After setting up the SQL tables, you can run the app by executing the following command in the project directory in the src folder:
 
-streamlit run app.py
+- cd ExpenseTrackerApp
+- cd src
+- streamlit run app.py
 The app will open in your default web browser, and you will be able to:
 
 - Add family members
