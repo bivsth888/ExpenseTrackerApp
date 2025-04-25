@@ -34,6 +34,9 @@ This app helps families gain better control over their finances by tracking all 
 To set up the database, execute the following SQL queries in the SSMS to create the necessary tables:
 
 ```sql
+CREATE DATABASE ExpenseTracker;
+GO
+
 CREATE TABLE FamilyMembers (
     id INT PRIMARY KEY IDENTITY(1,1),
     name VARCHAR(255) NOT NULL
